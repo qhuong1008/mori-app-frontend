@@ -160,7 +160,7 @@ const Ranking = () => {
                         </Link>
                       </TableCell>
                       <TableCell>
-                        <Link href={`/book/${item?.book_id}`} shallow> shallow
+                        <Link href={`/book/${item?.book_id}`} shallow>
                           {item?.bookInfo?.name}
                         </Link>
                       </TableCell>

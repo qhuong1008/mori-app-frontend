@@ -61,18 +61,26 @@
       }
       .searchBarContainer {
         border: 2px solid rgb(176, 176, 176);
-        border-radius: 7px;
+        border-radius: 10px;
+        // padding: 0 5px;
+        display: flex;
+        justify-content: space-between;
         input {
           width: 353px;
-          border-radius: 7px;
+          border-radius: 10px;
 
           outline: none;
           padding: 10px 10px;
           font-size: 13px;
         }
+        a {
+          background-color: rgb(196, 196, 196);
+          border-top-right-radius: 9px;
+          border-bottom-right-radius: 9px;
+        }
         button {
-          border-top-right-radius: 7px;
-          border-bottom-right-radius: 7px;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
           padding: 10px 10px;
           background-color: rgb(196, 196, 196);
           font-size: 13px;
