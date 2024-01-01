@@ -1,35 +1,42 @@
 .chapterAudioPlayer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  // background-color: #f2f2f2;
-  background-color: red;
-
-  .audioPlayerHeader {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    .bookInfo {
-      display: flex;
-      align-items: center;
-      .circleImage {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
-      .bookDetails {
-        margin-left: 8px;
-      }
+    left: 0;
+    width: 100%;
+    display: block !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    z-index: 999 !important;
+    background-color: rgb(2, 107, 188);
+    .audioPlayerHeader {
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        .bookInfo {
+            display: flex;
+            align-items: center;
+            .circleImage {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+            .bookDetails {
+                margin-left: 8px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: white;
+            }
+        }
     }
-  }
-  .audioPayerContainer {
-    display: flex;
-    justify-content: flex-end;
-    padding: 8px;
-    .audioPlayer {
-      width: 80%;
+    .audioPayerContainer {
+        display: flex;
+        padding: 5px;
+        min-width: 100%;
+        .audioPlayer {
+            width: 100%;
+            audio {
+                width: 100%;
+            }
+        }
     }
-  }
 }

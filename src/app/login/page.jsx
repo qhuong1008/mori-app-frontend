@@ -99,22 +99,20 @@ const Login = () => {
               // trường hợp account không bị khóa
               else {
                 // trường hợp account là user
-                if (resp.user.role === 0) {
-                  resolve("Đăng nhập thành công!");
-                  localStorage.setItem("authenticated", true);
-                  localStorage.setItem(
-                    "user",
-                    JSON.stringify({
-                      _id: resp.user._id,
-                      username: resp.user.username,
-                      email: resp.user.email,
-                      displayName: resp.user.displayName,
-                      phoneNumber: resp.user.phoneNumber,
-                      avatar: resp.user.avatar,
-                    })
-                  );
-                  router.replace("/")
-                }
+                resolve("Đăng nhập thành công!");
+                localStorage.setItem("authenticated", true);
+                localStorage.setItem(
+                  "user",
+                  JSON.stringify({
+                    _id: resp.user._id,
+                    username: resp.user.username,
+                    email: resp.user.email,
+                    displayName: resp.user.displayName,
+                    phoneNumber: resp.user.phoneNumber,
+                    avatar: resp.user.avatar,
+                  })
+                );
+                router.replace("/")
               }
 
             } else {

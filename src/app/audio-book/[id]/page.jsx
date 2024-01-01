@@ -30,7 +30,7 @@ import "@splidejs/react-splide/css/core";
 import * as libraryRequest from "../../redux/saga/requests/myLibrary";
 import BookItemSplide from "@/components/BookItemSplide/BookItemSplide";
 import {
-  addNewReadHistory,
+  addNewOrUpdateReadHistory,
   increaseTotalReadDaily,
 } from "@/app/redux/saga/requests/book";
 import { getMembershipByIdRequest } from "@/app/redux/saga/requests/membership";
@@ -40,6 +40,7 @@ import RatingStars from "@/components/RatingStars/RatingStars";
 
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import ChapterAudioPlayer from '@/components/ChapterAudioPlayer/ChapterAudioPlayer'
 
 
 function AudioBookPage() {
@@ -80,7 +81,7 @@ function AudioBookPage() {
       increaseTotalReadDaily(book._id);
       setSelectedChapter(chapter);
       if (currentAccount) {
-        addNewReadHistory({
+        addNewOrUpdateReadHistory({
           book: book,
           user: currentAccount._id,
         });
@@ -194,12 +195,11 @@ function AudioBookPage() {
   return (
     <>
       <div className={styles.bookContainer}>
-        <AudioPlayer
+        {/* <AudioPlayer
           className={styles.audioPlayerWrapper}
           src={selectedChapter.audio}
           ref={player}
-
-        />
+        /> */}
         {/* <ReactAudioPlayer
           src={selectedChapter.audio}
           autoPlay
@@ -218,7 +218,6 @@ function AudioBookPage() {
                   <div className={styles.author}>
                     <span>Tác giả: </span>
                     <a
-                      href="https://docsachhay.net/author/koga-fumitake-kishimi-ichiro"
                       title={book.author}
                       class="property-item"
                     >
@@ -333,9 +332,9 @@ function AudioBookPage() {
                     handleReadBook(c);
                   }}
                 />
-                {/* {selectedChapter && (
+                {selectedChapter && (
                   <ChapterAudioPlayer chapter={selectedChapter} book={book} />
-                )} */}
+                )}
               </div>
             </section>
             <section className={styles.productReview}>
