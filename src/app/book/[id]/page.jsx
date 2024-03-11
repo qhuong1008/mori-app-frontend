@@ -17,7 +17,7 @@ import {
   increaseTotalSaved,
 } from "@/app/redux/actions/book";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { redirect, useParams, useRouter } from "next/navigation";
 import Loading from "@/components/Loading/Loading";
 import BookItem from "@/components/BookItem/BookItem";
@@ -40,9 +40,20 @@ import {
 } from "@/app/redux/saga/requests/book";
 import { getMembershipByIdRequest } from "@/app/redux/saga/requests/membership";
 import { getReviewsById } from "@/app/redux/actions/review";
-import { deleteReviewRequest, reviewBookRequest, updateReviewRequest } from "@/app/redux/saga/requests/review";
+import {
+  deleteReviewRequest,
+  reviewBookRequest,
+  updateReviewRequest,
+} from "@/app/redux/saga/requests/review";
 import RatingStars from "@/components/RatingStars/RatingStars";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+} from "@nextui-org/react";
 // import PdfViewer from "@/components/PdfViewer/PdfViewer";
 
 function Book() {
@@ -62,12 +73,22 @@ function Book() {
   const [content, setContent] = useState("");
   const router = useRouter();
   const [showPdfViewer, setShowPdfViewer] = useState(false);
-  const [isOpenReviewOption, setIsOpenReviewOption] = useState(false)
-  const [isOpenReview, setIsOpenReview] = useState(null)
-  const { isOpen: isOpenModifyReview, onOpen: onOpenModifyReview, onOpenChange: onOpenChangeModifyReview, onClose: onCloseChangeModifyReview } = useDisclosure();
-  const { isOpen: isOpenDeleteReview, onOpen: onOpenDeleteReview, onOpenChange: onOpenChangeDeleteReview, onClose: onCloseChangeDeleteReview } = useDisclosure();
-  const [currentReviewContent, setCurrentReviewContent] = useState("")
-  const [reload, setReload] = useState(0)
+  const [isOpenReviewOption, setIsOpenReviewOption] = useState(false);
+  const [isOpenReview, setIsOpenReview] = useState(null);
+  const {
+    isOpen: isOpenModifyReview,
+    onOpen: onOpenModifyReview,
+    onOpenChange: onOpenChangeModifyReview,
+    onClose: onCloseChangeModifyReview,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDeleteReview,
+    onOpen: onOpenDeleteReview,
+    onOpenChange: onOpenChangeDeleteReview,
+    onClose: onCloseChangeDeleteReview,
+  } = useDisclosure();
+  const [currentReviewContent, setCurrentReviewContent] = useState("");
+  const [reload, setReload] = useState(0);
 
   const params = useParams();
   const id = params.id;
@@ -77,7 +98,7 @@ function Book() {
       router.push("/login");
     }
   };
-  console.log("currentReviewContent", currentReviewContent)
+  console.log("currentReviewContent", currentReviewContent);
   const handleUpdateReview = () => {
     toast.promise(
       new Promise((resolve, reject) => {
@@ -85,9 +106,8 @@ function Book() {
           .then((resp) => {
             if (resp.message) {
               resolve(resp.mesage);
-              onOpenChangeModifyReview()
-              setReload(p => p + 1)
-
+              onOpenChangeModifyReview();
+              setReload((p) => p + 1);
             } else {
               reject(resp.error);
             }
@@ -102,9 +122,8 @@ function Book() {
         error: (error) => error.message,
       }
     );
-    setReload(p => p + 1)
-
-  }
+    setReload((p) => p + 1);
+  };
   const handleDeleteReview = () => {
     toast.promise(
       new Promise((resolve, reject) => {
@@ -112,8 +131,8 @@ function Book() {
           .then((resp) => {
             if (resp.message) {
               resolve("Review deleted successfully.");
-              onCloseChangeDeleteReview()
-              dispatch(getReviewsById(id))
+              onCloseChangeDeleteReview();
+              dispatch(getReviewsById(id));
             } else {
               reject(resp.error);
             }
@@ -128,8 +147,7 @@ function Book() {
         error: (error) => error.message,
       }
     );
-
-  }
+  };
   const handleReadBook = async () => {
     if (book.access_level === 0) {
       increaseTotalReadDaily(book._id);
@@ -201,7 +219,7 @@ function Book() {
         reviewBookRequest(request).then((resp) => {
           if (resp.message) {
             resolve("Thêm review thành công!");
-            setReload(p => p + 1)
+            setReload((p) => p + 1);
           } else {
             reject(new Error("Thêm review thất bại!"));
           }
@@ -287,10 +305,7 @@ function Book() {
                   <h1 className={styles.novelTitle}>{book.name}</h1>
                   <div className={styles.author}>
                     <span>Tác giả: </span>
-                    <a
-                      title={book.author}
-                      class="property-item"
-                    >
+                    <a title={book.author} class="property-item">
                       <span>{book.author}</span>
                     </a>
                   </div>
@@ -369,11 +384,13 @@ function Book() {
                   </div>
                   <div className={styles.category}>
                     <div className={styles.title}>Thể loại</div>
-                    <Link href={"/book-category/tamlykynang"} shallow>
-                      <button className={styles.tag}>
-                        Tâm lý - Kỹ năng sống
-                      </button>
-                    </Link>
+                    {book.tags.map((tag, index) => (
+                      <React.Fragment key={index}>
+                        <Link href={`/book-category/${tag}`} shallow>
+                          <button className={styles.tag}>{tag}</button>
+                        </Link>{" "}
+                      </React.Fragment>
+                    ))}
                   </div>
 
                   <div className={styles.nextAction}>
@@ -590,7 +607,10 @@ function Book() {
                               <div className={styles.info}>
                                 <div className={styles.reviewAvatar}>
                                   {review.user.avatar && (
-                                    <img src={review.user.avatar} alt="avatar" />
+                                    <img
+                                      src={review.user.avatar}
+                                      alt="avatar"
+                                    />
                                   )}
                                 </div>
                                 <div className={styles.reviewProfileWrapper}>
@@ -613,20 +633,42 @@ function Book() {
                                   </div>
                                 </div>
                               </div>
-                              <div key={review._id} className={styles.option} onClick={() => {
-                                setIsOpenReviewOption(p => !p);
-                                setIsOpenReview(review)
-                                setCurrentReviewContent(review.content)
-                              }} >
-                                <FontAwesomeIcon className={styles.menu} icon={faEllipsisVertical} />
+                              <div
+                                key={review._id}
+                                className={styles.option}
+                                onClick={() => {
+                                  setIsOpenReviewOption((p) => !p);
+                                  setIsOpenReview(review);
+                                  setCurrentReviewContent(review.content);
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  className={styles.menu}
+                                  icon={faEllipsisVertical}
+                                />
 
-                                {isOpenReviewOption && review.user._id === currentAccount?._id && review._id === isOpenReview._id
+                                {isOpenReviewOption &&
+                                review.user._id === currentAccount?._id &&
+                                review._id === isOpenReview._id ? (
                                   // {isOpenReviewOption && isOpenReview._id === review._id
-                                  ? <div className={styles.actionWrapper}>
-                                    <div className={styles.actionItem} onClick={onOpenModifyReview}>Modify</div>
+                                  <div className={styles.actionWrapper}>
+                                    <div
+                                      className={styles.actionItem}
+                                      onClick={onOpenModifyReview}
+                                    >
+                                      Modify
+                                    </div>
                                     <div className={styles.optionRuler}></div>
-                                    <div className={styles.actionItem} onClick={onOpenDeleteReview}>Delete</div>
-                                  </div> : <></>}
+                                    <div
+                                      className={styles.actionItem}
+                                      onClick={onOpenDeleteReview}
+                                    >
+                                      Delete
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <></>
+                                )}
                               </div>
                             </div>
                           )}
@@ -696,7 +738,11 @@ function Book() {
         <Footer />
         <Toaster />
       </div>
-      <Modal placement="center" isOpen={isOpenModifyReview} onOpenChange={onOpenChangeModifyReview}>
+      <Modal
+        placement="center"
+        isOpen={isOpenModifyReview}
+        onOpenChange={onOpenChangeModifyReview}
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -707,10 +753,15 @@ function Book() {
                     <div className={styles.avatar}>
                       <img src={isOpenReview.user.avatar} alt="img" />
                     </div>
-                    <div className={styles.name}>{isOpenReview.user.displayName}</div>
+                    <div className={styles.name}>
+                      {isOpenReview.user.displayName}
+                    </div>
                   </div>
                   <div className={styles.inputWrapper}>
-                    <Input value={currentReviewContent} onChange={e => setCurrentReviewContent(e.target.value)} />
+                    <Input
+                      value={currentReviewContent}
+                      onChange={(e) => setCurrentReviewContent(e.target.value)}
+                    />
                   </div>
                 </div>
               </ModalBody>
@@ -718,26 +769,40 @@ function Book() {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={() => { onClose; handleUpdateReview() }}>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    onClose;
+                    handleUpdateReview();
+                  }}
+                >
                   Submit
                 </Button>
               </ModalFooter>
             </>
           )}
         </ModalContent>
-      </Modal >
-      <Modal placement="center" isOpen={isOpenDeleteReview} onOpenChange={onOpenChangeDeleteReview}>
+      </Modal>
+      <Modal
+        placement="center"
+        isOpen={isOpenDeleteReview}
+        onOpenChange={onOpenChangeDeleteReview}
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Delete this review?</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Delete this review?
+              </ModalHeader>
               <ModalBody>
                 <div className={styles.modifyWrapper}>
                   <div className={styles.userWrapper}>
                     <div className={styles.avatar}>
                       <img src={isOpenReview.user.avatar} alt="img" />
                     </div>
-                    <div className={styles.name}>{isOpenReview.user.displayName}</div>
+                    <div className={styles.name}>
+                      {isOpenReview.user.displayName}
+                    </div>
                   </div>
                   <div className={styles.inputWrapper}>
                     <Input value={isOpenReview.content} />
@@ -748,7 +813,13 @@ function Book() {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={() => { onClose; handleDeleteReview() }}>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    onClose;
+                    handleDeleteReview();
+                  }}
+                >
                   Yes
                 </Button>
               </ModalFooter>

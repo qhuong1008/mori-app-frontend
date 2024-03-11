@@ -40,8 +40,7 @@ import RatingStars from "@/components/RatingStars/RatingStars";
 
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import ChapterAudioPlayer from '@/components/ChapterAudioPlayer/ChapterAudioPlayer'
-
+import ChapterAudioPlayer from "@/components/ChapterAudioPlayer/ChapterAudioPlayer";
 
 function AudioBookPage() {
   const dispatch = useDispatch();
@@ -76,7 +75,6 @@ function AudioBookPage() {
   };
 
   const handleReadBook = async (chapter) => {
-
     if (book.access_level === 0) {
       increaseTotalReadDaily(book._id);
       setSelectedChapter(chapter);
@@ -191,7 +189,7 @@ function AudioBookPage() {
   //   redirect("/login")
   // }
 
-  let player = createRef()
+  let player = createRef();
   return (
     <>
       <div className={styles.bookContainer}>
@@ -217,10 +215,7 @@ function AudioBookPage() {
                   <h1 className={styles.novelTitle}>{book.name}</h1>
                   <div className={styles.author}>
                     <span>Tác giả: </span>
-                    <a
-                      title={book.author}
-                      class="property-item"
-                    >
+                    <a title={book.author} class="property-item">
                       <span>{book.author}</span>
                     </a>
                   </div>
@@ -293,11 +288,13 @@ function AudioBookPage() {
                   </div>
                   <div className={styles.category}>
                     <div className={styles.title}>Thể loại</div>
-                    <Link href={"/book-category/tamlykynang"} shallow>
-                      <button className={styles.tag}>
-                        Tâm lý - Kỹ năng sống
-                      </button>
-                    </Link>
+                    {book.tags.map((tag, index) => (
+                      <React.Fragment key={index}>
+                        <Link href={`/book-category/${tag}`} shallow>
+                          <button className={styles.tag}>{tag}</button>
+                        </Link>{" "}
+                      </React.Fragment>
+                    ))}
                   </div>
                   <div className={styles.nextAction}>
                     <button
